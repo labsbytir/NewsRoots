@@ -3,7 +3,7 @@
   "type": "project",
   "license": "GPL-2.0-or-later",
   "description": "Newspack Bedrock v1.1.0 \u2014 local-first newsroom on Roots Bedrock + Acorn",
-  "homepage": "https://github.com/Postdated/NewsRock",
+  "homepage": "https://github.com/labsbytir/newsroots",
   "keywords": [
     "bedrock",
     "composer",
@@ -106,7 +106,7 @@
     ]
   },
   "support": {
-    "issues": "https://github.com/Postdated/NewsRock/issues",
+    "issues": "https://github.com/labsbytir/newsroots/issues",
     "forum": "https://discourse.roots.io/category/bedrock"
   },
   "autoload": {

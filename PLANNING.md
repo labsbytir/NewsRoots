@@ -1,9 +1,7 @@
 # NewsRoots -- Core Platform Planning
 
-> **Self-Improving Loop Template**: see /Users/penelope/Documents/tir/self-improving-loop-template.md
-> **Last updated**: 2026-09-20
-> **Status**: Planning
-> **Workspace**: /Users/penelope/Documents/ChatGPT/Bedrock
+> **Last updated**: 2026-10-27
+> **Status**: Canonical monorepo established at `labsbytir/NewsRoots`
 
 ---
 
@@ -14,7 +12,7 @@
 | **Task Name** | NewsRoots Core Platform |
 | **Prompt Version** | v1.0 |
 | **Success Looks Like** | Fully documented, diagrammed, deployable NewsRoots monorepo with core Bedrock platform, NewsWoo plugin, NewsDesk theme, and CI/CD published to a GitHub org with working workflows |
-| **Failure Looks Like** | Undocumented code, missing diagrams, orphaned repos, broken sync scripts, no clear deployment path |
+| **Failure Looks Like** | Undocumented code, missing diagrams, no clear deployment path |
 | **Stop Condition** | All tasks below marked done, second-model verification complete, remote tree verified |
 
 ---
@@ -26,7 +24,7 @@
 ```mermaid
 graph TB
     subgraph NewsRoots Platform
-        NR[NewsRock Monorepo]
+        NR[NewsRoots Monorepo]
         subgraph Core
             NPB[newspack-bedrock]
         end
@@ -38,14 +36,8 @@ graph TB
             ND[newsdesk]
         end
         subgraph Tooling
-            SYNC[scripts]
             CI[.github/workflows]
         end
-    end
-
-    subgraph External Sources
-        NP_SRC[Postdated/Newspack]
-        NW_SRC[NewsWoo standalone]
     end
 
     subgraph Infrastructure
@@ -55,8 +47,6 @@ graph TB
         DB[(MySQL)]
     end
 
-    NP_SRC -->|pull-from-newspack.sh| NPB
-    NW_SRC -->|sync-to-monorepo.sh| NW
     NPB --> WP
     WP --> DB
     WP --> MC
@@ -159,24 +149,17 @@ flowchart LR
     end
 ```
 
-### Sync Architecture
+### Monorepo Layout
 
 ```mermaid
 graph LR
-    subgraph Standalone
-        NP[Postdated/Newspack]
-        NW_REPO[NewsWoo repo]
-    end
-
-    subgraph NewsRock Monorepo
+    subgraph NewsRoots
+        CORE[NewsRock application]
         NPB[newspack-bedrock]
-        NWD[newswoo]
+        NW[newswoo]
+        ND[newsdesk]
+        QA[newsrockqa]
     end
-
-    NP -->|pull-from-newspack.sh| NPB
-    NPB -->|sync-to-newsrock.sh| NP
-    NW_REPO -->|sync-to-monorepo.sh| NWD
-    NWD -->|pull-from-newswoo.sh| NW_REPO
 ```
 
 ---
@@ -199,24 +182,19 @@ graph LR
 
 | Component | Location | Status | Notes |
 |-----------|----------|--------|-------|
-| NewsRock monorepo | NewsRock/ | Local OK, Remote unknown | Contains newspack-bedrock, newswoo, newsdesk, scripts |
-| newspack-bedrock | NewsRock/newspack-bedrock/ | v1.1.0, 30+ plugins | Composer installable, tests present |
-| newswoo | NewsRock/newswoo/ | Code written, Phase 2 stripping pending | 6 Eloquent models, 3 services, REST API, mu-plugin, config, smoke tests |
-| newswoo source | NewsWoo/ | WooCommerce zips present | 11.1.1 core + Subscriptions 9.2.0 + Memberships 1.30.0 |
-| newsdesk | NewsRock/newsdesk/ | Placeholder only | Just a README |
-| discord-bot | Newspack/discord-bot/ | Docker setup | Dockerfile, docker-compose, .env.example |
-| Sync scripts | NewsRock/scripts/ | Written, Untested | pull-from-newspack, pull-from-newswoo, sync-to-monorepo |
-| CI workflows | NewsRock/.github/workflows/ | Written | ci.yml, sync-newspack.yml |
-| Compliance audit | NewsRock/newswoo/FULL_COMPLIANCE_AUDIT.md | Done | 23 items checked, 8 pass, 11 fail |
+| NewsRoots monorepo | Repository root | Published at `labsbytir/NewsRoots` | Canonical repository for the newsroom stack |
+| newspack-bedrock | `newspack-bedrock/` | v1.1.0, 30+ plugins | Composer installable, tests present |
+| newswoo | `newswoo/` | Integrated | Eloquent models, services, REST API, mu-plugin, config, smoke tests |
+| newsdesk | `newsdesk/` | In progress | Newspack theme for Bedrock and Sage |
+| NewsRockQA | `newsrockqa/` | Archived source was empty | Placeholder README retained in monorepo |
+| CI workflows | `.github/workflows/` | Active | CI for Newspack Bedrock and NewsWoo |
+| Compliance audit | `newswoo/FULL_COMPLIANCE_AUDIT.md` | Done | 23 items checked, 8 pass, 11 fail |
 
 ### Key Issues
 
-1. **GitHub access**: Need to verify gh auth and determine target org
-2. **Remote state**: No remote configured for this workspace
-3. **newswoo Phase 2**: Core stripping not started (shipping, inventory, cart, coupons, tax)
-4. **newsdesk**: Empty -- needs Sage/Bedrock theme scaffold
-5. **No deployment path**: No Cloudflare Workers, no hosting config
-6. **No diagrams in repo**: AGENTS.md requires pipeline diagrams
+1. **newswoo Phase 2**: Core stripping not started (shipping, inventory, cart, coupons, tax)
+2. **newsdesk**: Needs Sage/Bedrock theme scaffold
+3. **No deployment path**: No Cloudflare Workers, no hosting config
 
 ---
 
@@ -249,7 +227,7 @@ graph LR
 - [ ] **3E** Simplify tax (geo-location removal, billing-only)
 - [ ] **3F** Wire payment gateways (Stripe, Apple Pay)
 - [ ] **3G** Write NewsWoo integration tests
-- [ ] **3H** Sync to monorepo
+- [ ] **3H** Integrate NewsWoo changes directly in the monorepo
 
 ### Phase 4: NewsDesk Theme
 
@@ -272,7 +250,7 @@ graph LR
 
 - [ ] **6.1** Update all READMEs
 - [ ] **6.2** Add Mermaid diagrams to every product README
-- [ ] **6.3** Document sync workflow
+- [ ] **6.3** Document the monorepo contribution workflow
 - [ ] **6.4** Create onboarding guide
 - [ ] **6.5** License audit (GPL-2.0)
 
@@ -282,7 +260,7 @@ graph LR
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
-| 2026-09-20 | Use NewsRock as monorepo reference | User specified structure it like NewsRock |
+| 2026-10-27 | Use NewsRoots as the canonical monorepo | Consolidated the newsroom projects into one repository |
 | 2026-09-20 | Bedrock + Acorn stack | Roots ecosystem for modern WordPress |
 | 2026-09-20 | Memcached over Redis | Roots Trellis default, simpler ops |
 | 2026-09-20 | PHP 8.3+ minimum | Modern WordPress + Acorn requirement |
@@ -316,5 +294,5 @@ The 6 new Eloquent models (Subscription, Membership, MembershipPlan, Order, Prod
 
 ---
 
-*Next action: Verify GitHub auth (Task 1.1)*
+*Next action: Continue product hardening and deployment planning.*
 

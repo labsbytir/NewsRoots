@@ -23,7 +23,7 @@ vendor/
 .phpunit.cache/
 
 # Local-only standalone checkouts
-Newspack/
+/Newspack/
 # WooCommerce source archives
 woocommerce*.zip
 source-assets/

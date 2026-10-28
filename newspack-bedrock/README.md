@@ -29,11 +29,11 @@ Gutenberg blocks from `newspack-blocks` ship compiled `dist/` assets and `block.
 
 ## Install
 
-This product lives in the [NewsRock](https://github.com/Postdated/NewsRock) monorepo.
+This product lives in the [NewsRoots](https://github.com/labsbytir/newsroots) monorepo.
 
 ```bash
-git clone https://github.com/Postdated/NewsRock.git
-cd NewsRock/newspack-bedrock
+git clone https://github.com/labsbytir/newsroots.git
+cd newsroots/newspack-bedrock
 cp .env.example .env
 composer install
 ```
@@ -61,5 +61,3 @@ GPL-2.0-or-later for this project and WordPress plugins. Newspack: Automattic. B
 Composer installs plugin files into `web/app/plugins/` (and the pack MU-plugin into `web/app/mu-plugins/`). Activating **Newspack** opens **Newspack pack**, which lists every bundled companion plugin and asks which ones to activate. Recommended plugins are pre-checked. Skip is always available.
 
 This uses WordPress activation, not zip downloads, so it works with Bedrock `DISALLOW_FILE_MODS` in production. Gutenberg blocks emit standard block markup for Sage.
-
-Sync this tree into the NewsRock monorepo with `../scripts/sync-to-newsrock.sh` from a standalone Newspack checkout, or `../scripts/pull-from-newspack.sh` from NewsRock.
